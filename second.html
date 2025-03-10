@@ -3,17 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        article{
+            display: flex;
+            column-gap: 20px;
+            justify-content: space-around;
+        }
+        .first input{
+            width: 200px;
+            height: 20px;
+            border-radius: 4px;
+            border:1px #858585 solid;
+        }
+        .first button{
+            width: 70px;
+            background-color: #589dd3;
+            border: 2px #589dd3 solid;
+            border-radius: 4px;
+        }
+        #CountdownTimer{
+            text-align: center;
+        }
+        #clock {
+            text-align: center;
+            font-size: 50px;
+            color: #3e3065;
+        }
+        h2{
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-
+<article>
+    <div class="first">
 <h2>Time Counter</h2>
 <input type="number" id="countdownSeconds" placeholder="Set Seconds">
 <button id="StartCountdown">Start</button>
 <button id="StoptCountdown">Stop</button>
 <div id="CountdownTimer"></div>
-
+    </div>
+    <div>
 <h2>Dynamic Clock</h2>
 <div id="clock"></div>
+    </div>
+</article>
 <script>
 const countdownSeconds = document.getElementById('countdownSeconds');
 const StartCountdown = document.getElementById('StartCountdown');
@@ -22,24 +60,33 @@ const CountdownTimer = document.getElementById('CountdownTimer');
 let countdownInterval;
 let remainingSeconds;
 
-StartCountdown.addEventListener('click', function () {
-    remainingSeconds = parseInt(countdownSeconds.value);
-    if (isNaN(remainingSeconds) ||remainingSeconds <= 0) {
-        alert('Please enter a valid number');
-        return;
+StartCountdown.addEventListener('click', startCountdown);
+countdownSeconds.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+        startCountdown()
     }
-    CountdownTimer.textContent = remainingSeconds;
+});
 
-    countdownInterval = setInterval(function () {
-        remainingSeconds --;
+    function startCountdown() {
+        remainingSeconds = parseInt(countdownSeconds.value);
+        if (isNaN(remainingSeconds) ||remainingSeconds <= 0) {
+            alert('Please enter a valid number');
+            return;
+        }
         CountdownTimer.textContent = remainingSeconds;
 
-        if (remainingSeconds <= 0) {
-            clearInterval(countdownInterval);
-            CountdownTimer.textContent = 'Time Left!';
-        }
-    }, 1000);
-});
+        countdownInterval = setInterval(function () {
+            remainingSeconds --;
+            CountdownTimer.textContent = remainingSeconds;
+
+            if (remainingSeconds <= 0) {
+                clearInterval(countdownInterval);
+                CountdownTimer.textContent = 'Time Left!';
+            }
+        }, 1000);
+    }
+
+
 StopCountdown.addEventListener('click', function () {
     clearInterval(countdownInterval);
     CountdownTimer.textContent = '0';
