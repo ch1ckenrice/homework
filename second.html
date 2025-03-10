@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h2>Time Counter</h2>
+<input type="number" id="countdownSeconds" placeholder="Set Seconds">
+<button id="StartCountdown">Start</button>
+<button id="StoptCountdown">Stop</button>
+<div id="CountdownTimer"></div>
+
+<h2>Dynamic Clock</h2>
+<div id="clock"></div>
+<script>
+const countdownSeconds = document.getElementById('countdownSeconds');
+const StartCountdown = document.getElementById('StartCountdown');
+const StopCountdown = document.getElementById('StoptCountdown');
+const CountdownTimer = document.getElementById('CountdownTimer');
+let countdownInterval;
+let remainingSeconds;
+
+StartCountdown.addEventListener('click', function () {
+    remainingSeconds = parseInt(countdownSeconds.value);
+    if (isNaN(remainingSeconds) ||remainingSeconds <= 0) {
+        alert('Please enter a valid number');
+        return;
+    }
+    CountdownTimer.textContent = remainingSeconds;
+
+    countdownInterval = setInterval(function () {
+        remainingSeconds --;
+        CountdownTimer.textContent = remainingSeconds;
+
+        if (remainingSeconds <= 0) {
+            clearInterval(countdownInterval);
+            CountdownTimer.textContent = 'Time Left!';
+        }
+    }, 1000);
+});
+StopCountdown.addEventListener('click', function () {
+    clearInterval(countdownInterval);
+    CountdownTimer.textContent = '0';
+});
+
+const clock = document.getElementById('clock');
+
+function updateClock() {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    clock.textContent = `${hours}:${minutes}:${seconds}`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+</body>
+</html>
